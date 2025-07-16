@@ -67,17 +67,19 @@ pipeline {
                 }
             }
         }
+    
+
+
+
+        stage('Deploy SVC app') {
+            steps {
+                withKubeConfig(credentialsId: 'srinivas-k8s-creds') {
+                    sh ' kubectl apply -f bankapp-service.yml'
+                }
+            }
+        }
     }
 }
-
-
-//         stage('Deploy SVC app') {
-//             steps {
-//                 withKubeConfig(credentialsId: 'srinivas-k8s-creds') {
-//                     sh ' kubectl apply -f bankapp-service.yml'
-//                 }
-//             }
-//         }
 
 //         stage('Deploy to Kubernetes') {
 //             steps {
