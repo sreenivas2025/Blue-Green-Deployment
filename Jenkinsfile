@@ -78,25 +78,27 @@ pipeline {
                 }
             }
         }
+    
+
+
+        stage('Deploy to Kubernetes') {
+            steps {
+                script {
+                    def deploymentFile = ""
+                    if (params.DEPLOY_ENV == 'blue') {
+                        deploymentFile = 'app-deployment-blue.yml'
+                    } else {
+                        deploymentFile = 'app-deployment-green.yml'
+                    }
+                    
+                    withKubeConfig(credentialsId: 'srinivas-k8s-creds') {
+                       sh "kubectl apply -f ${deploymentFile}"
+                    }
+                }
+            }
+        }
     }
 }
-
-//         stage('Deploy to Kubernetes') {
-//             steps {
-//                 script {
-//                     def deploymentFile = ""
-//                     if (params.DEPLOY_ENV == 'blue') {
-//                         deploymentFile = 'app-deployment-blue.yml'
-//                     } else {
-//                         deploymentFile = 'app-deployment-green.yml'
-//                     }
-                    
-//                     withKubeConfig(credentialsId: 'venkat-kubect-config-creds') {
-//                        sh "kubectl apply -f ${deploymentFile}"
-//                     }
-//                 }
-//             }
-//         }
 
 
         
