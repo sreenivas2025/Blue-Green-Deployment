@@ -57,21 +57,23 @@ pipeline {
                 }
             }
         }
+    
+
+
+        stage('Deploy MySQL to Local K8s') {
+            steps {
+                withKubeConfig(credentialsId: 'srinivas-k8s-creds') {
+                    sh 'kubectl apply -f mysql-ds.yml'
+                }
+            }
+        }
     }
 }
-
-//         stage('Deploy MySQL to Local K8s') {
-//             steps {
-//                 withKubeConfig(credentialsId: 'venkat-kubect-config-creds') {
-//                     sh 'kubectl apply -f mysql-ds.yml'
-//                 }
-//             }
-//         }
 
 
 //         stage('Deploy SVC app') {
 //             steps {
-//                 withKubeConfig(credentialsId: 'venkat-kubect-config-creds') {
+//                 withKubeConfig(credentialsId: 'srinivas-k8s-creds') {
 //                     sh ' kubectl apply -f bankapp-service.yml'
 //                 }
 //             }
