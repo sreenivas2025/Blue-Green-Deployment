@@ -1,7 +1,0 @@
-bankappService:
-  ports:
-  - nodePort: 30080
-    port: 80
-    targetPort: 8080
-  type: NodePort
-kubernetesClusterDomain: cluster.local
