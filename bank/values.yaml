@@ -1,0 +1,18 @@
+bankappBlue:
+  bankapp:
+    env:
+      springDatasourcePassword: Test@123
+      springDatasourceUrl: jdbc:mysql://mysql-service:3306/bankappdb?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+      springDatasourceUsername: root
+    image:
+      repository: psrao2025/bankapp
+      tag: blue
+    resources:
+      limits:
+        cpu: "1"
+        memory: 1000Mi
+      requests:
+        cpu: 500m
+        memory: 500Mi
+  replicas: 1
+kubernetesClusterDomain: cluster.local

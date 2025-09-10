@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "bank.fullname" . }}-bankapp-blue
+  labels:
+  {{- include "bank.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.bankappBlue.replicas }}
+  selector:
+    matchLabels:
+      app: bankapp
+      version: blue
+    {{- include "bank.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        app: bankapp
+        version: blue
+      {{- include "bank.selectorLabels" . | nindent 8 }}
+    spec:
+      containers:
+      - env:
+        - name: SPRING_DATASOURCE_URL
+          value: {{ quote .Values.bankappBlue.bankapp.env.springDatasourceUrl }}
+        - name: SPRING_DATASOURCE_USERNAME
+          value: {{ quote .Values.bankappBlue.bankapp.env.springDatasourceUsername }}
+        - name: SPRING_DATASOURCE_PASSWORD
+          value: {{ quote .Values.bankappBlue.bankapp.env.springDatasourcePassword }}
+        - name: KUBERNETES_CLUSTER_DOMAIN
+          value: {{ quote .Values.kubernetesClusterDomain }}
+        image: {{ .Values.bankappBlue.bankapp.image.repository }}:{{ .Values.bankappBlue.bankapp.image.tag
+          | default .Chart.AppVersion }}
+        name: bankapp
+        ports:
+        - containerPort: 8080
+        resources: {{- toYaml .Values.bankappBlue.bankapp.resources | nindent 10 }}
